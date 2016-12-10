@@ -14,7 +14,7 @@ An AMAZON-AWS-IOT Project at the Hackster.io - The FARM HACK Team
 # Features :
 * Calculation and Exact Water Amount for the Respective Crop - based on the plant data
 * Monitoring the Climatic conditions - Humitidity (Atmosphere & Soil), Temperature
-* Monitors activity near the plants using a motion sensor to prevent any intrusion
+* Monitors activity near the plants using a motion sensor to prevent any intrusion (Export Frequency, Time, Trigger Buzzer)
 * Monitors the Light conditions over the plants - to measure the exposure to proper sunlight over the crops for a particular duration
 * LEDs and Buzzers at the IOT Hardware and the application to ensure proper alert
 * An Descriptive Application in Android and a Skill in Alexa - Which provides stats, water timings for the crops and the detail of the crop lifecycle
