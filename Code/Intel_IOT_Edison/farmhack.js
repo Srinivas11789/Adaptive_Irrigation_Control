@@ -38,9 +38,9 @@ var path = require("path");
 var mqttPort = 8883;
 var certPath = '/home/root/';
 var awsRootCACert = "root-CA.crt";
-var awsClientCert = "farm-hack.cert.pem.crt";
-var awsClientPrivateKey = "farm-hack.private.key";
-var awsClientId = "farm-hack";
+var awsClientCert = "farm_hack.cert.pem.crt";
+var awsClientPrivateKey = "farm_hack.private.key";
+var awsClientId = "farm_hack";
 var topicName = "sensor_topic";
 
 var privateKeyPath = certPath + awsClientPrivateKey;
@@ -57,7 +57,7 @@ var device = awsIoT.device({
 
 console.log("AWS IoT Device object initialized");
 
-device.subscribe('sensor_topic');
+
 
 // Initialize the hardware for whichever kit we are using
 var five = require("johnny-five");
@@ -66,34 +66,64 @@ var board = new five.Board({
   io: new Edison()
 });
 
+var grove_motion = require('jsupm_biss0001');
+ // Instantiate a Grove Motion sensor on GPIO pin D2
+ var myMotionObj = new grove_motion.BISS0001(2);
+
 board.on("ready", function() {
-    var moisture = new five.Sensor("A1");
-  var temp = new five.Temperature({
-    pin: "A0",
-    controller: "GROVE"
-  });
     
-    this.loop(2000, function() {
-    console.log("%d°C", Math.round(temp.celsius));
-  });
+    var moisture = new five.Sensor("A1");
+    var moistureCond = "";
     
     moisture.scale(0, 100).on("change", function() {
-    // 0 - Dry 
-    // 50 - Wet
-    if (this.value < 20) {
-      console.log("dry");
-    } else {
-      console.log("its ok");
-    }
+        // 0 - Dry
+        // 50 - Wet
+        if (this.value < 20) {
+          moistureCond = "dry";
+        } else {
+          moistureCond = "wet";
+        }
+    });
+    
+    var multi = new five.Multi({
+        controller: "TH02"
+    });
+
+    device.subscribe('sensor_topic');
+
+    this.loop(2000, function() {
+    
+        console.log("motion val: "+myMotionObj.value());
+        console.log("Thermometer"); 
+        console.log("  celsius           : ", multi.thermometer.celsius);
+        console.log("  fahrenheit        : ", multi.thermometer.fahrenheit);
+        console.log("  kelvin            : ", multi.thermometer.kelvin);
+        console.log("--------------------------------------");
+
+        console.log("Hygrometer");
+        console.log("  relative humidity : ", multi.hygrometer.relativeHumidity);
+
+        console.log("--------------------------------------");
+        
+        console.log("being published");
+        
+        device.publish('sensor_topic', JSON.stringify({
+            message: "Values recorded",
+            SerialNumber: awsClientId+"#"+new Date(),
+            clientID: awsClientId,
+            temperature: multi.thermometer.celsius,
+            humidity: multi.hygrometer.relativeHumidity,
+            moisture: moistureCond,
+            motion: myMotionObj.value(),
+            timestamp: new Date()
+        }));
   });
+  
     
-    device.publish('temperature', JSON.stringify({
-            tempVal: temp
-          }));
+   
     
-    device.publish('moisture', JSON.stringify({
-            moistureVal: moisture
-          }));
+    
+    
     
 });
 
