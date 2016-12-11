@@ -1,1 +1,16 @@
+# IOT --->
+
+# AWS --->
+* A "Thing" should be configured with respective Certificate, Private Keys and a Script file (WIN - Powershell Script / Linux - Shell)
+* Configuration can be done in JavaScript/Python and Java.
+* A Policy should be applied to the THING.
+* The Script effectively communicates with the device installing the Certificates, Keys as well the SDK
+* The Sample Application can be run to check whether the communication between the IOT and AWS is valid. (like the one in template folder)
+
+# DataBase --->
+* No SQL - Dynamo DB is used as a light weight DB
+* The Data Base table can be created with the "Client ID" and "timestamp" as the primary keys using the GUI
+
+
+# Client (Android/Alexa) --->
 
