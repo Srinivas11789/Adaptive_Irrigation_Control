@@ -1,5 +1,6 @@
 # Adaptive_Irrigation_Control
 An AMAZON-AWS-IOT Project at the Hackster.io - The FARM HACK Team
+Link - https://www.hackster.io/farm-hack/adaptive-irrigation-control-e29ed7?ref=user&ref_id=140635&offset=0
 
 # Team Members: 
 1. Abhishek Kumar 
