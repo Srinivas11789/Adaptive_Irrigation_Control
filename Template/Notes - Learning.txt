@@ -10,6 +10,9 @@
 # DataBase --->
 * No SQL - Dynamo DB is used as a light weight DB
 * The Data Base table can be created with the "Client ID" and "timestamp" as the primary keys using the GUI
+* The IoT device periodically publishes data to the Cloud and this data is stored into the AWS Dynamo DB.
+* This is achieved by adding a rule to the "thing".
+* The rule added here listens to the topic 'sensor_topic' and any message addressed to this topic is stored into the DB.
 
 
 # Client (Android/Alexa) --->
